@@ -8,5 +8,7 @@ namespace LibraryProject.Models
         public bool IsAvailable { get; set; } = true;
         public int publishYear { get; set; }
 
+        public bool IsDeleted { get; set; } = false;
+
     }
 }

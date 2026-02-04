@@ -31,9 +31,9 @@ namespace LibraryProject.Business
         public void ListBooks()
         {
 
-            var books = _context.Books.ToList();
+            var books = _context.Books.Where(b => !b.IsDeleted).ToList();
 
-            Console.WriteLine("\n--- SQL SERVER KİTAP LİSTESİ ---");
+            Console.WriteLine("\n--- KİTAP LİSTESİ ---");
             foreach (var book in books)
             {
                 string status = book.IsAvailable ? "Rafta" : "Ödünçte";
@@ -44,12 +44,12 @@ namespace LibraryProject.Business
         public void DeleteBook(int id)
         {
 
-            var book = _context.Books.FirstOrDefault(b => b.Id == id);
+            var book = _context.Books.Find(id);
             if (book != null)
             {
-                _context.Books.Remove(book);
+                book.IsDeleted = true;
                 _context.SaveChanges();
-                Console.WriteLine("Kitap SQL'den tamamen silindi.");
+                Console.WriteLine("[Sistem]: Kitap Arşivlendi.");
             }
             else
             {
@@ -138,6 +138,23 @@ namespace LibraryProject.Business
 
             _context.SaveChanges();
             Console.WriteLine($"\n[Başarılı]: '{book.Title}' iade alındı ve rafa eklendi.");
+        }
+
+        public void ListOverdueBooks()
+        {
+            var today = DateTime.Now;
+            var overdueLoans = _context.Loans
+                .Include(l => l.Book)
+                .Include(l => l.Member)
+                .Where(l => l.ReturnDate == null && l.DueDate < today)
+                .ToList();
+
+            Console.WriteLine("\n--- SÜRESİ GEÇEN KİTAPLAR ---");
+            foreach (var l in overdueLoans)
+            {
+                var gecikmeGunu = (today - l.DueDate).Days;
+                Console.WriteLine($"Kitap: {l.Book.Title} | Üye: {l.Member.FirstName} | {gecikmeGunu} gün gecikti!");
+            }
         }
 
         public void ListLoans()

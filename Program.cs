@@ -19,14 +19,18 @@ namespace LibraryProject
                 Console.WriteLine("1- Kitap Ekle");
                 Console.WriteLine("2- Kitapları Listele");
                 Console.WriteLine("3- Kitap Sil");
+
                 Console.WriteLine("");
+
                 Console.WriteLine("\n--- ÜYE İŞLEMLERİ ---");
                 Console.WriteLine("4- Yeni Üye Kaydı");
                 Console.WriteLine("5- Üyeleri Listele");
+
                 Console.WriteLine("\n--- ÖDÜNÇ SİSTEMİ ---");
                 Console.WriteLine("6- Kitap Ödünç Ver");
                 Console.WriteLine("7- Kitabı İade Al");
                 Console.WriteLine("8- Ödünç Takip Listesi");
+
                 Console.WriteLine("");
                 Console.Write("Seçiminiz: ");
 
