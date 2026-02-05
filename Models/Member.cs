@@ -7,5 +7,7 @@ namespace LibraryProject.Models
         public string LastName { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
         public DateTime JoinDate { get; set; } = DateTime.Now;
+
+        public bool IsDeleted { get; set; } = false;
     }
 }

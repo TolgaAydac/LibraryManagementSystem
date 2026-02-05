@@ -11,50 +11,61 @@ conn_str = (
 
 def start_injection():
     try:
-        print("\n--- ADIM 1: Open Library API Veri Çekme ---")
-        url = "https://openlibrary.org/subjects/programming.json?limit=10"
-        res = requests.get(url)
-        
-        if res.status_code != 200:
-            print(f"❌ API Hatası! Kod: {res.status_code}")
-            return
-
-        data = res.json()
-        works = data.get('works', [])
-        
-        if not works:
-            print("❌ Veri bulunamadı. Alternatif veriler yükleniyor...")
-            works = [
-                {'title': 'Clean Code', 'authors': [{'name': 'Robert C. Martin'}]},
-                {'title': 'The Pragmatic Programmer', 'authors': [{'name': 'Andrew Hunt'}]}
-            ]
-        
-        print(f"✅ BAŞARILI: {len(works)} adet kitap hazır.")
-        print("\n--- ADIM 2: SQL İşlemleri ---")
         conn = pyodbc.connect(conn_str, autocommit=True)
         cursor = conn.cursor()
 
-        for book in works:
-            title = book.get('title', 'Bilinmeyen Kitap')[0:150]
-            authors_list = book.get('authors', [])
-            author = authors_list[0].get('name', 'Anonim') if authors_list else "Anonim"
+        print("--- ADIM 1: Kategoriler Hazırlanıyor ---")
 
-            year = book.get('first_publish_year', 2024)
-            
-            cursor.execute("""
-                INSERT INTO Books (Title, Author, IsAvailable, IsDeleted, publishYear) 
-                VALUES (?, ?, 1, 0, ?)
-            """, (title, author, year))
-            print(f"🚀 SQL'e Fırlatıldı: {title} - {year}")
-            
-        cursor.execute("SELECT COUNT(*) FROM Books")
-        toplam = cursor.fetchone()[0]
-        print(f"\n✅ İŞLEM TAMAM: Şu an veritabanında toplam {toplam} kitap var!")
+        search_queries = {
+            "Yazılım": "programming",
+            "Bilim Kurgu": "science_fiction",
+            "Psikoloji": "psychology",
+            "Tarih": "history",
+            "Felsefe": "philosophy",
+            "Polisiye": "mystery",
+            "Klasik Edebiyat": "classic_literature",
+            "Ekonomi": "finance"
+        }
         
+        category_map = {}
+
+        for cat_name in search_queries.keys():
+            cursor.execute("SELECT Id FROM Categories WHERE Name = ?", (cat_name,))
+            row = cursor.fetchone()
+            if row:
+                category_map[cat_name] = row[0]
+            else:
+                cursor.execute("INSERT INTO Categories (Name) VALUES (?)", (cat_name,))
+                cursor.execute("SELECT @@IDENTITY") 
+                category_map[cat_name] = cursor.fetchone()[0]
+        
+        print(f"✅ {len(category_map)} Kategori hazırlandı.")
+
+        print("\n--- ADIM 2: Kitaplar Raflara Diziliyor ---")
+
+        for cat_name, api_subject in search_queries.items():
+            print(f"\n📂 {cat_name} kategorisi çekiliyor...")
+            
+            url = f"https://openlibrary.org/subjects/{api_subject}.json?limit=10"
+            res = requests.get(url)
+            works = res.json().get('works', [])
+
+            for work in works:
+                title = work.get('title', 'Bilinmeyen')[0:150]
+                author = work.get('authors', [{}])[0].get('name', 'Anonim')[0:100]
+                year = work.get('first_publish_year', 2024)
+
+                cursor.execute("""
+                    INSERT INTO Books (Title, Author, IsAvailable, IsDeleted, PublishYear, CategoryId) 
+                    VALUES (?, ?, 1, 0, ?, ?)
+                """, (title, author, year, category_map[cat_name]))
+                print(f"📚 {cat_name} -> {title}")
+
         conn.close()
+        print("\n🚀 İŞLEM TAMAM! Kütüphane raflara göre tıkır tıkır dolduruldu.")
 
     except Exception as e:
-        print(f"\n❌ BİR HATA OLUŞTU: {e}")
+        print(f"\n❌ HATA: {e}")
 
 if __name__ == "__main__":
     start_injection()

@@ -7,8 +7,10 @@ namespace LibraryProject.Models
         public string Author { get; set; } = string.Empty;
         public bool IsAvailable { get; set; } = true;
         public int publishYear { get; set; }
-
         public bool IsDeleted { get; set; } = false;
+
+        public int CategoryId { get; set; }
+        public Category? Category { get; set; }
 
     }
 }

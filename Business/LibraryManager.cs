@@ -41,6 +41,11 @@ namespace LibraryProject.Business
             }
         }
 
+        public List<Book> GetAllBooks()
+        {
+            return _context.Books.Where(b => !b.IsDeleted).ToList();
+        }
+
         public void DeleteBook(int id)
         {
 
@@ -88,6 +93,23 @@ namespace LibraryProject.Business
             }
         }
 
+        public void DeleteMember(int memberId)
+        {
+
+            var member = _context.Members.FirstOrDefault(m => m.Id == memberId && !m.IsDeleted);
+
+            if (member != null)
+            {
+
+                member.IsDeleted = true;
+                _context.SaveChanges();
+                Console.WriteLine($"\n[Business] {member.FirstName} {member.LastName} sistemde pasife çekildi.");
+            }
+            else
+            {
+                Console.WriteLine("\n[Business] Hata: Üye bulunamadı veya zaten silinmiş.");
+            }
+        }
         public void IssueBook(int bookId, int memberId)
         {
             var book = _context.Books.Find(bookId);
@@ -171,6 +193,11 @@ namespace LibraryProject.Business
                 string durum = l.ReturnDate == null ? "Teslim Edilmedi" : $"İade Edildi ({l.ReturnDate})";
                 Console.WriteLine($"Kitap: {l.Book.Title} | Üye: {l.Member.FirstName} {l.Member.LastName} | Tarih: {l.LoanDate} | Durum: {durum}");
             }
+        }
+
+        internal void DeleteMember(object context)
+        {
+            throw new NotImplementedException();
         }
     }
 }
