@@ -13,10 +13,10 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LibraryManagementSystem")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7059b931cba545244374fcfb676dc8d6215389a0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b46a86f381e9719f3b3b04bb66c554a0563c6290")]
 [assembly: System.Reflection.AssemblyProductAttribute("LibraryManagementSystem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LibraryManagementSystem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
-// MSBuild WriteCodeFragment sınıfı tarafından oluşturuldu.
+
 
