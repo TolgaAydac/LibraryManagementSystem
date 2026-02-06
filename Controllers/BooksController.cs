@@ -17,4 +17,15 @@ public class BooksController : ControllerBase
         var books = _manager.GetAllBooks();
         return Ok(books);
     }
+
+    [HttpGet("search")]
+    public IActionResult SearchBooks(string? title, string? author)
+    {
+        var results = _manager.GetAllBooks()
+            .Where(b => (string.IsNullOrEmpty(title) || b.Title.Contains(title, StringComparison.OrdinalIgnoreCase)) &&
+                        (string.IsNullOrEmpty(author) || b.Author.Contains(author, StringComparison.OrdinalIgnoreCase)))
+            .ToList();
+        return Ok(results);
+    }
+
 }

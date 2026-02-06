@@ -120,7 +120,7 @@ using LibraryProject.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Servisleri ekle
+
 builder.Services.AddDbContext<LibraryDbContext>();
 builder.Services.AddScoped<LibraryManager>();
 builder.Services.AddControllers();
@@ -129,9 +129,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// DİKKAT: app.UseHttpsRedirection(); satırı VARSA SİL VEYA YORUMA AL!
 
-// Her koşulda Swagger'ı aç
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -142,4 +140,4 @@ app.UseSwaggerUI(c =>
 app.MapControllers();
 
 Console.WriteLine("🚀 API Ayaklandı: http://localhost:5000/swagger");
-app.Run("http://localhost:5000"); // Programı özellikle HTTP 5000'e kilitliyoruz
+app.Run("http://localhost:5000");

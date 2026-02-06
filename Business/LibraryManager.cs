@@ -3,6 +3,8 @@ using LibraryProject.Data;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
+
 
 namespace LibraryProject.Business
 {
@@ -13,6 +15,7 @@ namespace LibraryProject.Business
 
         public void AddBook(string title, string author, int year)
         {
+
             Book newBook = new Book
             {
                 Title = title,
@@ -46,6 +49,20 @@ namespace LibraryProject.Business
             return _context.Books.Where(b => !b.IsDeleted).ToList();
         }
 
+        public List<Member> GetAllMembers()
+        {
+            return _context.Members.Where(m => !m.IsDeleted).ToList();
+        }
+
+        public List<Category> GetAllCategories()
+        {
+            return _context.Categories.ToList();
+        }
+
+
+
+
+
         public void DeleteBook(int id)
         {
 
@@ -64,6 +81,16 @@ namespace LibraryProject.Business
 
         public void AddMember(string firstname, string lastname, string phone)
         {
+
+            if (string.IsNullOrWhiteSpace(firstname) || string.IsNullOrWhiteSpace(lastname))
+            {
+                throw new Exception("İsim ve soyisim alanları boş bırakılamaz!");
+            }
+
+            if (!Regex.IsMatch(phone, @"^[0-9]+$") || phone.Length < 10)
+            {
+                throw new Exception("Geçersiz telefon numarası! Lütfen sadece rakam içeren en az 10 haneli bir numara girin.");
+            }
             var Member = new Member
             {
                 FirstName = firstname,
@@ -113,27 +140,27 @@ namespace LibraryProject.Business
         public void IssueBook(int bookId, int memberId)
         {
             var book = _context.Books.Find(bookId);
-            if (book != null && book.IsAvailable)
+            var member = _context.Members.Find(memberId);
+
+            if (book != null && book.IsAvailable && member != null)
             {
                 book.IsAvailable = false;
-
                 var loan = new Loan
                 {
                     BookId = bookId,
                     MemberId = memberId,
-
+                    LoanDate = DateTime.Now,
+                    DueDate = DateTime.Now.AddDays(14)
                 };
 
                 _context.Loans.Add(loan);
                 _context.SaveChanges();
-                Console.WriteLine($"{book.Title} ödünç verildi.");
             }
             else
             {
-                Console.WriteLine("Hata: Kitap bulunamadı veya zaten ödünç verilmiş.");
+
+                throw new Exception("Kitap bulunamadı, zaten ödünç verilmiş veya üye geçersiz.");
             }
-
-
         }
         public void ReturnBook(int bookId)
         {
@@ -195,9 +222,40 @@ namespace LibraryProject.Business
             }
         }
 
+        public List<Loan> GetAllLoans()
+        {
+
+            return _context.Loans
+                .Include(l => l.Book)
+                .Include(l => l.Member)
+                .OrderByDescending(l => l.LoanDate)
+                .ToList();
+        }
         internal void DeleteMember(object context)
         {
             throw new NotImplementedException();
+        }
+
+        public object GetLibraryStatusReport()
+        {
+            return new
+            {
+                ToplamKitapSayisi = _context.Books.Count(b => !b.IsDeleted),
+                RaftakiKitaplar = _context.Books.Count(b => b.IsAvailable && !b.IsDeleted),
+                OduncVerilenler = _context.Books.Count(b => !b.IsAvailable && !b.IsDeleted),
+                ToplamUyeSayisi = _context.Members.Count(m => !m.IsDeleted),
+                AktifOduncKayitlari = _context.Loans.Count(l => l.ReturnDate == null)
+            };
+        }
+
+        public List<Loan> GetOverdueLoans()
+        {
+            var today = DateTime.Now;
+            return _context.Loans
+                .Include(l => l.Book)
+                .Include(l => l.Member)
+                .Where(l => l.ReturnDate == null && l.DueDate < today)
+                .ToList();
         }
     }
 }
