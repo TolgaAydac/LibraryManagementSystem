@@ -153,3 +153,5 @@ C:\Users\tolga\OneDrive\Masaüstü\LibraryManagementSystem\obj\Debug\net9.0\refi
 C:\Users\tolga\OneDrive\Masaüstü\LibraryManagementSystem\obj\Debug\net9.0\LibraryManagementSystem.pdb
 C:\Users\tolga\OneDrive\Masaüstü\LibraryManagementSystem\obj\Debug\net9.0\LibraryManagementSystem.genruntimeconfig.cache
 C:\Users\tolga\OneDrive\Masaüstü\LibraryManagementSystem\obj\Debug\net9.0\ref\LibraryManagementSystem.dll
+C:\Users\tolga\OneDrive\Masaüstü\LibraryManagementSystem\bin\Debug\net9.0\frontend\package-lock.json
+C:\Users\tolga\OneDrive\Masaüstü\LibraryManagementSystem\bin\Debug\net9.0\frontend\package.json
