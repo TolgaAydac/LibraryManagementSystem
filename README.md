@@ -13,7 +13,7 @@ Modern ve ölçeklenebilir bir kütüphane yönetim sistemi.
 
 - **Backend:** .NET Web API
 - **Veritabanı:** SQL Server (Entity Framework Core)
-- **Dokümantasyon:** Swagger UI
+- **Dokümantasyon:** Swagger UI & Postman
 - **Otomasyon:** Python
 
 ## 📋 Proje Yapısı
