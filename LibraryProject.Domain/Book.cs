@@ -1,4 +1,4 @@
-namespace LibraryProject.Models
+namespace LibraryProject.Domain
 {
     public class Book
     {

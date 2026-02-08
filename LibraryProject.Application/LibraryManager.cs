@@ -1,17 +1,19 @@
-using LibraryProject.Models;
-using LibraryProject.Data;
-using System;
-using System.Linq;
+using LibraryProject.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
 
-namespace LibraryProject.Business
+namespace LibraryProject.Application
 {
     public class LibraryManager
     {
 
-        private readonly LibraryDbContext _context = new LibraryDbContext();
+        private readonly ILibraryDbContext _context;
+        public LibraryManager(ILibraryDbContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
 
         public void AddBook(string title, string author, int year)
         {

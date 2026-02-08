@@ -115,17 +115,21 @@
 //     }
 // }
 
-using LibraryProject.Business;
-using LibraryProject.Data;
+using LibraryProject.Application;
+using LibraryProject.Infrastructure.Data;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddDbContext<LibraryDbContext>();
+builder.Services.AddScoped<ILibraryDbContext>(provider => provider.GetRequiredService<LibraryDbContext>());
 builder.Services.AddScoped<LibraryManager>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
 
 var app = builder.Build();
 

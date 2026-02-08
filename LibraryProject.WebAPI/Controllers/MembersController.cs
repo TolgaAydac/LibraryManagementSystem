@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using LibraryProject.Business;
-using LibraryProject.Models;
+using LibraryProject.Application;
+using LibraryProject.Domain;
 
 namespace LibraryProject.Controllers
 {
