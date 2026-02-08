@@ -12,19 +12,16 @@ public class BooksController : ControllerBase
         _manager = manager;
     }
     [HttpGet]
-    public IActionResult GetAllBooks()
+    public IActionResult GetAllBooks([FromQuery] PaginationParameters @params)
     {
-        var books = _manager.GetAllBooks();
+        var books = _manager.GetAllBooksPaged(@params);
         return Ok(books);
     }
 
     [HttpGet("search")]
-    public IActionResult SearchBooks(string? title, string? author)
+    public IActionResult SearchBooks(string? title, string? author, [FromQuery] PaginationParameters @params)
     {
-        var results = _manager.GetAllBooks()
-            .Where(b => (string.IsNullOrEmpty(title) || b.Title.Contains(title, StringComparison.OrdinalIgnoreCase)) &&
-                        (string.IsNullOrEmpty(author) || b.Author.Contains(author, StringComparison.OrdinalIgnoreCase)))
-            .ToList();
+        var results = _manager.SearchBooksPaged(title, author, @params);
         return Ok(results);
     }
 

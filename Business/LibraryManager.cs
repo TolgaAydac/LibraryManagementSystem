@@ -44,9 +44,30 @@ namespace LibraryProject.Business
             }
         }
 
-        public List<Book> GetAllBooks()
+        public List<Book> GetAllBooksPaged(PaginationParameters @params)
         {
-            return _context.Books.Where(b => !b.IsDeleted).ToList();
+            return _context.Books
+                .OrderBy(b => b.Id)
+                .Skip((@params.PageNumber - 1) * @params.PageSize)
+                .Take(@params.PageSize)
+                .ToList();
+        }
+
+        public List<Book> SearchBooksPaged(string? title, string? author, PaginationParameters @params)
+        {
+            var query = _context.Books.AsQueryable();
+
+            if (!string.IsNullOrEmpty(title))
+                query = query.Where(b => b.Title.Contains(title));
+
+            if (!string.IsNullOrEmpty(author))
+                query = query.Where(b => b.Author.Contains(author));
+
+            return query
+                .OrderBy(b => b.Id)
+                .Skip((@params.PageNumber - 1) * @params.PageSize)
+                .Take(@params.PageSize)
+                .ToList();
         }
 
         public List<Member> GetAllMembers()
