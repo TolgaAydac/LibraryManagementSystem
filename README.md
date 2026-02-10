@@ -4,7 +4,7 @@ Modern ve ölçeklenebilir bir kütüphane yönetim sistemi.
 
 ## 🚀 Öne Çıkan Özellikler
 
-- **Katmanlı Mimari:** Business, Data, Model ve Controller katmanları ile modüler ve bakımı kolay bir yapı.
+- **Katmanlı Mimari:** Modern Clean Architecture prensipleriyle yapılandırılmış; Domain, Application ve Infrastructure katmanları arasında Dependency Injection ile izolasyon sağlayan, modüler ve yüksek ölçeklenebilir mimari.
 - **Gelişmiş Raporlama:** Teslim tarihi geçen kitaplar ve kütüphane genel istatistikleri için optimize edilmiş özel endpointler.
 - **Akıllı İş Mantığı:** Soft-delete mekanizması, borçlu üyelerin kitap alımını engelleyen kontrol sistemleri.
 - **Veri Otomasyonu (Python Seeding):** Test verilerini(Kitaplar, Yazarlar, Üyeler) SQL Server'a saniyeler içinde enjekte eden özel Python scriptleri.
