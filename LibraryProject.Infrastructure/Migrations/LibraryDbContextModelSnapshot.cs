@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LibraryManagementSystem.Migrations
+namespace LibraryProject.Infrastructure.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
     partial class LibraryDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace LibraryManagementSystem.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("LibraryProject.Models.Book", b =>
+            modelBuilder.Entity("LibraryProject.Domain.Book", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,7 +57,7 @@ namespace LibraryManagementSystem.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("LibraryProject.Models.Category", b =>
+            modelBuilder.Entity("LibraryProject.Domain.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,9 +71,51 @@ namespace LibraryManagementSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Yazılım"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Bilim Kurgu"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Psikoloji"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Ekonomi"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Tarih"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Felsefe"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Polisiye"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Klasik Edebiyat"
+                        });
                 });
 
-            modelBuilder.Entity("LibraryProject.Models.Loan", b =>
+            modelBuilder.Entity("LibraryProject.Domain.Loan", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,7 +147,7 @@ namespace LibraryManagementSystem.Migrations
                     b.ToTable("Loans");
                 });
 
-            modelBuilder.Entity("LibraryProject.Models.Member", b =>
+            modelBuilder.Entity("LibraryProject.Domain.Member", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -134,11 +176,22 @@ namespace LibraryManagementSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Members");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            FirstName = "Tolga",
+                            IsDeleted = false,
+                            JoinDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastName = "Aydaç",
+                            PhoneNumber = "1234567890"
+                        });
                 });
 
-            modelBuilder.Entity("LibraryProject.Models.Book", b =>
+            modelBuilder.Entity("LibraryProject.Domain.Book", b =>
                 {
-                    b.HasOne("LibraryProject.Models.Category", "Category")
+                    b.HasOne("LibraryProject.Domain.Category", "Category")
                         .WithMany("Books")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -147,15 +200,15 @@ namespace LibraryManagementSystem.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("LibraryProject.Models.Loan", b =>
+            modelBuilder.Entity("LibraryProject.Domain.Loan", b =>
                 {
-                    b.HasOne("LibraryProject.Models.Book", "Book")
+                    b.HasOne("LibraryProject.Domain.Book", "Book")
                         .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LibraryProject.Models.Member", "Member")
+                    b.HasOne("LibraryProject.Domain.Member", "Member")
                         .WithMany()
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -166,7 +219,7 @@ namespace LibraryManagementSystem.Migrations
                     b.Navigation("Member");
                 });
 
-            modelBuilder.Entity("LibraryProject.Models.Category", b =>
+            modelBuilder.Entity("LibraryProject.Domain.Category", b =>
                 {
                     b.Navigation("Books");
                 });
