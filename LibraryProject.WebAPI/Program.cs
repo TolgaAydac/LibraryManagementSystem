@@ -126,6 +126,7 @@ builder.Services.AddDbContext<LibraryDbContext>();
 builder.Services.AddScoped<ILibraryDbContext>(provider => provider.GetRequiredService<LibraryDbContext>());
 builder.Services.AddScoped<LibraryManager>();
 builder.Services.AddControllers();
+builder.Services.AddHealthChecks();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -141,6 +142,7 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
+app.MapHealthChecks("/health");
 app.MapControllers();
 
 Console.WriteLine("🚀 API Ayaklandı: http://localhost:5000/swagger");
