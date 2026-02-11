@@ -53,10 +53,12 @@ appsettings.json dosyasındaki ConnectionString'i yerel SQL Server bilgilerinizl
 Proje ana dizininde uygulamayı başlatın (Migrationlar otomatik çalışacaktır):
 
 Bash
+
 dotnet run --project LibraryProject.WebAPI
 Veri otomasyonu için Python scriptlerini çalıştırın:
 
 Bash
+
 cd Scripts
 python data_injector.py
 🧪 Testlerin Çalıştırılması
