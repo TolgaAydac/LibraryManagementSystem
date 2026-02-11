@@ -1,34 +1,66 @@
-# 🏛️ Library Management System API
+**🏛️ Library Management System API**
 
-Modern ve ölçeklenebilir bir kütüphane yönetim sistemi.
+Modern, test odaklı ve Clean Architecture prensiplerine uygun olarak geliştirilmiş bir kütüphane yönetim sistemi.
 
-## 🚀 Öne Çıkan Özellikler
+**🚀 Öne Çıkan Özellikler**
 
-- **Katmanlı Mimari:** Modern Clean Architecture prensipleriyle yapılandırılmış; Domain, Application ve Infrastructure katmanları arasında Dependency Injection ile izolasyon sağlayan, modüler ve yüksek ölçeklenebilir mimari.
-- **Gelişmiş Raporlama:** Teslim tarihi geçen kitaplar ve kütüphane genel istatistikleri için optimize edilmiş özel endpointler.
-- **Akıllı İş Mantığı:** Soft-delete mekanizması, borçlu üyelerin kitap alımını engelleyen kontrol sistemleri.
-- **Veri Otomasyonu (Python Seeding):** Test verilerini(Kitaplar, Yazarlar, Üyeler) SQL Server'a saniyeler içinde enjekte eden özel Python scriptleri.
+**Katmanlı Mimari (Clean Architecture):** Domain, Application ve Infrastructure katmanları arasında tam izolasyon sağlayan, Dependency Inversion (Interface-based) prensibiyle yapılandırılmış modüler mimari.
 
-## 🛠️ Teknolojiler
+**Unit Testing & Mocking:** xUnit ve Moq kütüphaneleri kullanılarak, iş mantığını ve veritabanı etkileşimlerini (DbSet Mocking) doğrulayan test.
 
-- **Backend:** .NET Web API
-- **Veritabanı:** SQL Server (Entity Framework Core)
-- **Dokümantasyon:** Swagger UI & Postman
-- **Otomasyon:** Python
+**Observability & Logging:** Serilog entegrasyonu ile yapılandırılmış; Console ve Rolling File (günlük rotasyonlu) tabanlı loglama altyapısı.
 
-## 📋 Proje Yapısı
+**Advanced Pagination:** Client-side performansını optimize eden, TotalCount, PageSize ve TotalPages meta-verilerini içeren sayfalama sistemi.
 
-- **Business:** İş mantığı ve Manager sınıflarının bulunduğu katman.
-- **Data:** DbContext ve Veritabanı konfigürasyonları.
-- **Controllers:** API endpoint tanımlamaları.
-- **Python Scripts:** `data_injector.py` ve `member_injector.py` ile otomatik veri üretimi.
+**Health Monitoring:** /health endpoint'i üzerinden veritabanı ve uygulama servis sağlığını anlık izleme.
 
-## ⚙️ Kurulum ve Çalıştırma
+**Akıllı İş Mantığı:** Soft-delete mekanizması ve regex tabanlı veri doğrulama.
 
-1. Projeyi klonlayın: `git clone https://github.com/TolgaAydac/LibraryManagementSystem.git`
-2. `appsettings.json` dosyasındaki ConnectionString'i kendi yerel SQL Server bilgilerinizle güncelleyin.
-3. Terminalde şu komutları çalıştırın:
-   ```bash
-   dotnet ef database update
-   dotnet run
-   ```
+**Migration Orchestration:** Veritabanı ve tablo yapısının uygulama ayağa kalkarken otomatik olarak oluşturulması ve senkronize edilmesi.
+
+**🛠️ Teknolojiler**
+
+Backend: .NET Web API
+
+Veritabanı: SQL Server (Entity Framework Core)
+
+Testing: xUnit, Moq
+
+Dokümantasyon: Swagger UI & Postman
+
+Otomasyon: Python
+
+**📋 Proje Yapısı**
+
+LibraryProject.Domain: Temel varlıklar (Entities) ve kontratlar.
+
+LibraryProject.Application: İş mantığı (Manager), DTO'lar, Interface'ler ve Pagination logic.
+
+LibraryProject.Infrastructure: Data access katmanı, DbContext ve Migration süreçleri.
+
+LibraryProject.WebAPI: Endpoint tanımlamaları, Middleware ve Program.cs konfigürasyonları.
+
+LibraryProject.Tests: Birim testlerin bulunduğu katman.
+
+Scripts: data_injector.py ve member_injector.py ile otomatik veri üretimi.
+
+**⚙️ Kurulum ve Çalıştırma**
+
+Projeyi klonlayın: git clone https://github.com/TolgaAydac/LibraryManagementSystem.git
+
+appsettings.json dosyasındaki ConnectionString'i yerel SQL Server bilgilerinizle güncelleyin.
+
+Proje ana dizininde uygulamayı başlatın (Migrationlar otomatik çalışacaktır):
+
+Bash
+dotnet run --project LibraryProject.WebAPI
+Veri otomasyonu için Python scriptlerini çalıştırın:
+
+Bash
+cd Scripts
+python data_injector.py
+🧪 Testlerin Çalıştırılması
+Sistemdeki iş mantığının doğruluğunu teyit etmek için şu komutu kullanın:
+
+Bash
+dotnet test
