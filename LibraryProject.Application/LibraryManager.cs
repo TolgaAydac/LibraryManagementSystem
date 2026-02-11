@@ -1,6 +1,8 @@
 using LibraryProject.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using System.Linq;
+using Serilog;
 
 
 namespace LibraryProject.Application
@@ -48,7 +50,7 @@ namespace LibraryProject.Application
 
         public PagedResult<Book> GetAllBooksPaged(PaginationParameters @params)
         {
-            var query = _context.Books.where(b => !b.IsDeleted);
+            var query = _context.Books.Where(b => !b.IsDeleted);
             var totalCount = query.Count();
 
             var items = query
@@ -57,6 +59,7 @@ namespace LibraryProject.Application
         .Take(@params.PageSize)
         .ToList();
 
+            Log.Information("Kitaplar listelendi. Toplam kayıt: {Count}", totalCount);
 
             return new PagedResult<Book>
             {
@@ -66,6 +69,8 @@ namespace LibraryProject.Application
                 PageSize = @params.PageSize,
                 TotalPages = (int)Math.Ceiling(totalCount / (double)@params.PageSize)
             };
+
+            Log.Information("Kitaplar listelendi. Toplam kayıt: {Count}", totalCount);
         }
 
         public List<Book> SearchBooksPaged(string? title, string? author, PaginationParameters @params)

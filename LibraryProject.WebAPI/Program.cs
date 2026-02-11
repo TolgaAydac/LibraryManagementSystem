@@ -118,10 +118,17 @@
 using LibraryProject.Application;
 using LibraryProject.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File("logs/library_logs.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
+builder.Host.UseSerilog();
 
 builder.Services.AddDbContext<LibraryDbContext>();
 builder.Services.AddScoped<ILibraryDbContext>(provider => provider.GetRequiredService<LibraryDbContext>());
