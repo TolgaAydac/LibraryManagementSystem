@@ -48,8 +48,8 @@ namespace LibraryProject.Application
 
         public PagedResult<Book> GetAllBooksPaged(PaginationParameters @params)
         {
-            var query = _context.Books.AsQueryable();
-            var totalItems = query.Count();
+            var query = _context.Books.where(b => !b.IsDeleted);
+            var totalCount = query.Count();
 
             var items = query
         .OrderBy(b => b.Id)
