@@ -1,6 +1,6 @@
 # 🏛️ Library Management System API
 
-Modern, test odaklı ve **Clean Architecture** prensiplerine uygun olarak geliştirilmiş, yüksek ölçeklenebilir bir kütüphane yönetim sistemi.
+**Clean Architecture** prensiplerine uygun olarak geliştirilmiş kütüphane yönetim sistemi.
 
 ---
 
