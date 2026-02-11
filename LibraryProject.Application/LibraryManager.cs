@@ -70,7 +70,7 @@ namespace LibraryProject.Application
                 TotalPages = (int)Math.Ceiling(totalCount / (double)@params.PageSize)
             };
 
-            Log.Information("Kitaplar listelendi. Toplam kayıt: {Count}", totalCount);
+
         }
 
         public List<Book> SearchBooksPaged(string? title, string? author, PaginationParameters @params)
