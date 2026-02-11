@@ -117,6 +117,7 @@
 
 using LibraryProject.Application;
 using LibraryProject.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -146,4 +147,19 @@ app.MapHealthChecks("/health");
 app.MapControllers();
 
 Console.WriteLine("🚀 API Ayaklandı: http://localhost:5000/swagger");
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<LibraryDbContext>();
+        context.Database.Migrate();
+        Console.WriteLine("✅ Veritabanı kontrol edildi ve güncellendi.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Veritabanı güncelleme hatası: {ex.Message}");
+    }
+}
+
 app.Run("http://localhost:5000");

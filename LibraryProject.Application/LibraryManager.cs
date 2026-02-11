@@ -46,13 +46,26 @@ namespace LibraryProject.Application
             }
         }
 
-        public List<Book> GetAllBooksPaged(PaginationParameters @params)
+        public PagedResult<Book> GetAllBooksPaged(PaginationParameters @params)
         {
-            return _context.Books
-                .OrderBy(b => b.Id)
-                .Skip((@params.PageNumber - 1) * @params.PageSize)
-                .Take(@params.PageSize)
-                .ToList();
+            var query = _context.Books.AsQueryable();
+            var totalItems = query.Count();
+
+            var items = query
+        .OrderBy(b => b.Id)
+        .Skip((@params.PageNumber - 1) * @params.PageSize)
+        .Take(@params.PageSize)
+        .ToList();
+
+
+            return new PagedResult<Book>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = @params.PageNumber,
+                PageSize = @params.PageSize,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)@params.PageSize)
+            };
         }
 
         public List<Book> SearchBooksPaged(string? title, string? author, PaginationParameters @params)
