@@ -8,7 +8,7 @@ namespace LibraryProject.Infrastructure.Data
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-CMIPSPQ\SQLEXPRESS;Database=LibraryManagementDb;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(@"Server=host.docker.internal;Database=LibraryManagementDb;User Id=sa;Password=Sifre123*;TrustServerCertificate=True;");
         }
 
         public DbSet<Book> Books { get; set; } = null!;
